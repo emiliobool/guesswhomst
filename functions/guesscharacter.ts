@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 export async function onRequest({ request, env }) {
   const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
-  const { guess, topic, character, title } = await request.json();
+  const { guess, topic, character } = await request.json();
 
   const MODEL = env.OPENAI_MODEL || "gpt-3.5-turbo"
 
@@ -12,7 +12,7 @@ export async function onRequest({ request, env }) {
     messages: [
       {
         role: "system",
-        content: `You are a knowledgeable entity about the ${title} ${topic} universe. The user will mention a character, if it is the character "${character}" answer with true, otherwise false`,
+        content: `You are a knowledgeable entity about the ${topic} universe. The user will mention a character, if it is the character "${character}" answer with true, otherwise false`,
       },
       {
         role: "user",
@@ -22,7 +22,7 @@ export async function onRequest({ request, env }) {
     functions: [
       {
         name: "reply",
-        description: `Reply with true or false if the user character is ${character} from ${title}`,
+        description: `Reply with true or false if the user character is ${character} from ${topic}`,
         parameters: {
           type: "object",
           properties: {

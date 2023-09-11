@@ -58,10 +58,10 @@ const useStageTransition = () => {
   };
 
   const getCharacter = useCallback(async () => {
-    const title = await api.getTitle(topic);
-    setTitle(title);
+    // const title = await api.getTitle(topic);
+    // setTitle(title);
 
-    const name = await api.getCharacter(topic, title);
+    const name = await api.getCharacter(topic);
     setCharacter(name);
     addMessage({
       text: <>I'm thinking of a character in the  <strong className="text-white">{topic}</strong> category.<br /> 

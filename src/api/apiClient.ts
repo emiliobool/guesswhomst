@@ -3,13 +3,13 @@ type AskQuestionResponse = {
   reply: string;
 };
 
-export async function askQuestion(question, character, topic, title): Promise<string> {
+export async function askQuestion(question, character, topic ): Promise<string> {
   const response = await fetch("/askquestion", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ question, character, topic, title }),
+    body: JSON.stringify({ question, character, topic  }),
   });
 
   const data = await response.json() as AskQuestionResponse;
@@ -35,13 +35,13 @@ type GuessCharacterResponse = {
   correct: boolean;
 };
 
-export async function guessCharacter(guess, character, topic, title): Promise<boolean> {
+export async function guessCharacter(guess, character, topic ): Promise<boolean> {
   const response = await fetch("/guesscharacter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ guess, character, topic, title }),
+    body: JSON.stringify({ guess, character, topic  }),
   });
 
   const data = await response.json() as GuessCharacterResponse;
@@ -49,13 +49,13 @@ export async function guessCharacter(guess, character, topic, title): Promise<bo
 }
 type GetCharacterResponse = string
 
-export async function getCharacter(topic, title): Promise<string> {
+export async function getCharacter(topic): Promise<string> {
   const response = await fetch("/getcharacter", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ topic, title }),
+    body: JSON.stringify({ topic }),
   });
   const data = await response.text() as GetCharacterResponse;
   return data

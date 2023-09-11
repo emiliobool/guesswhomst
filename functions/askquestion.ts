@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 export async function onRequest({ request, env }) {
   const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
-  const { question, topic, character, title } = await request.json();
+  const { question, topic, character } = await request.json();
 
   const MODEL = env.OPENAI_MODEL || "gpt-3.5-turbo"
   const gptResponse = await openai.chat.completions.create({
@@ -11,7 +11,7 @@ export async function onRequest({ request, env }) {
     messages: [
       {
         role: "system",
-        content: `You are a knowledgeable entity about the ${title} ${topic} universe. You will be asked with a yes/no question for the character "${character}", and you must answer with yes, no or maybe and nothing else.`,
+        content: `You are a knowledgeable entity about the ${topic} universe. You will be asked with a yes/no question for the character "${character}", and you must answer with yes, no or maybe and nothing else.`,
       },
       {
         role: "user",
@@ -21,7 +21,7 @@ export async function onRequest({ request, env }) {
     functions: [
       {
         name: "reply",
-        description: `Reply with yes, no or maybe to the question about the character ${character} from ${title}`,
+        description: `Reply with yes, no or maybe to the question about the character ${character} from ${topic}`,
         parameters: {
           type: "object",
           properties: {
