@@ -12,7 +12,7 @@ type Message = {
         topic: string;
       }) => React.ReactNode);
   sender: "Bot" | "You";
-  guess: boolean;
+  guess?: boolean;
   time: Date;
 };
 
@@ -130,7 +130,8 @@ const useStageTransition = () => {
     });
   }
   useEffect(() => {
-    if (stage === "questionStage" && messages.length > 20) {
+    const questionCount = messages.filter(m => m.sender === 'You').length - 1
+    if (stage === "questionStage" && questionCount > 20) {
       addQuestionsOverMessage();
       setStage("guessStage");
     }
@@ -140,6 +141,7 @@ const useStageTransition = () => {
     async (message: string) => {
       addMessage({ text: message, sender: "You", time: new Date(), guess: true });
 
+    const questionCount = messages.filter(m => m.sender === 'You').length - 1
       // Make an API call to get a reply
       const correct = await api.guessCharacter(
         message,
@@ -150,13 +152,17 @@ const useStageTransition = () => {
       addMessage({
         text: correct ? (
           <>
-            <strong>YOU WIN!</strong> the character was{" "}
+            <strong>YOU WON!</strong> the character was{" "}
             <strong>{character}</strong> from <strong>{topic}</strong>!
+            <br />
+            You used {questionCount} questions!
           </>
         ) : (
           <>
             <strong>YOU LOST</strong>, the character was{" "}
             <strong>{character}</strong> from <strong>{topic}</strong>
+            <br />
+            You used {questionCount} questions!
           </>
         ),
         sender: "Bot",
