@@ -12,6 +12,7 @@ type Message = {
         topic: string;
       }) => React.ReactNode);
   sender: "Bot" | "You";
+  guess: boolean;
   time: Date;
 };
 
@@ -137,7 +138,7 @@ const useStageTransition = () => {
 
   const guess = useCallback(
     async (message: string) => {
-      addMessage({ text: message, sender: "You", time: new Date() });
+      addMessage({ text: message, sender: "You", time: new Date(), guess: true });
 
       // Make an API call to get a reply
       const correct = await api.guessCharacter(

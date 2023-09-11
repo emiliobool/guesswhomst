@@ -48,7 +48,7 @@ function App() {
               </div>
               <div
                 className={`chat-bubble chat-bubble-${
-                  message.sender === "Bot" ? "primary" : "secondary"
+                  message.sender === "Bot" ? "primary" : message.guess ? "secondary": ""
                 } text-lg`}
               >
                 {typeof message.text === "function"

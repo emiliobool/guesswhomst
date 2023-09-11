@@ -12,7 +12,7 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
 
   useEffect(() => {
     const handleClick = () => {
-      if (window.getSelection().toString() === '') {
+      if (window.getSelection().toString() === "") {
         focusInput();
       }
     };
@@ -26,7 +26,7 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
 
   useEffect(() => {
     const handleKeyPress = () => {
-      if (window.getSelection().toString() === '') {
+      if (window.getSelection().toString() === "") {
         focusInput();
       }
     };
@@ -38,7 +38,6 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
     };
   }, []);
 
-
   useEffect(focusInput, []);
 
   const handleInputChange = (event) => {
@@ -46,11 +45,15 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   };
 
   const handleAskSubmit = (event) => {
-    if(askDisabled && guessDisabled) return
-    if(event.key && event.key !== "Enter") return
-      event.preventDefault();
+    if (askDisabled && guessDisabled) return;
+    if (event.key && event.key !== "Enter") return;
+    event.preventDefault();
+    if (event.shiftKey) {
+      onSendMessage(message, "guess");
+    } else {
       onSendMessage(message, "ask");
-      setMessage("");
+    }
+    setMessage("");
   };
 
   const handleGuessSubmit = (event) => {
@@ -89,4 +92,3 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   );
 };
 export default InputAreaComponent;
-
