@@ -64,14 +64,27 @@ const useStageTransition = () => {
     const name = await api.getCharacter(topic);
     setCharacter(name);
     addMessage({
-      text: <>I'm thinking of a character in the  <strong className="text-white">{topic}</strong> category.<br /> 
-      <strong className="text-yellow-500">Your goal</strong> is to guess whomst character it is in as few questions as possible, 
-      and when you are ready you can press <strong className="text-green-600">guess</strong> to send your answer, 
-      but if you get it wrong you <strong className="text-red-500">lose</strong>! 
-      You can't ask more than <strong className="text-blue-500">20 questions</strong> either. <br />
-      And I'll only answer with <strong className="text-white">yes</strong>, <strong className="text-white">no</strong> or <strong className="text-white">maybe</strong>. 
-      <br />
-      <strong className="font-italic">Start asking questions!</strong></>,
+      text: (
+        <>
+          I'm thinking of a character in the{" "}
+          <strong className="text-white">{topic}</strong> category.
+          <br />
+          <strong className="text-yellow-500">Your goal</strong> is to guess
+          whomst character it is in as few questions as possible, and when you
+          are ready you can press{" "}
+          <strong className="text-green-600">guess</strong> to send your answer,
+          but if you get it wrong you{" "}
+          <strong className="text-red-500">lose</strong>! You can't ask more
+          than <strong className="text-blue-500">20 questions</strong> either.{" "}
+          <br />
+          And I'll only answer with <strong className="text-white">
+            yes
+          </strong>, <strong className="text-white">no</strong> or{" "}
+          <strong className="text-white">maybe</strong>.
+          <br />
+          <strong className="font-italic">Start asking questions!</strong>
+        </>
+      ),
       sender: "Bot",
       time: new Date(),
     });
@@ -83,11 +96,12 @@ const useStageTransition = () => {
     if (stage === "start") {
       setMessages([
         {
-          text: 
-              <>
-                Please send a message with a movie, show, videogame or anime where you want to try to guess a character.
-              </>
-          ,
+          text: (
+            <>
+              Please send a message with a movie, show, videogame or anime where
+              you want to try to guess a character.
+            </>
+          ),
           sender: "Bot",
           time: new Date(),
         },
@@ -130,7 +144,7 @@ const useStageTransition = () => {
     });
   }
   useEffect(() => {
-    const questionCount = messages.filter(m => m.sender === 'You').length - 1
+    const questionCount = messages.filter((m) => m.sender === "You").length - 1;
     if (stage === "questionStage" && questionCount > 20) {
       addQuestionsOverMessage();
       setStage("guessStage");
@@ -139,15 +153,20 @@ const useStageTransition = () => {
 
   const guess = useCallback(
     async (message: string) => {
-      addMessage({ text: message, sender: "You", time: new Date(), guess: true });
 
-    const questionCount = messages.filter(m => m.sender === 'You').length - 1
+      if (!message.trim()) return;
+
+      addMessage({
+        text: message,
+        sender: "You",
+        time: new Date(),
+        guess: true,
+      });
+
+      const questionCount =
+        messages.filter((m) => m.sender === "You").length - 1;
       // Make an API call to get a reply
-      const correct = await api.guessCharacter(
-        message,
-        character,
-        topic,
-      );
+      const correct = await api.guessCharacter(message, character, topic);
       // Add the reply to the messages array
       addMessage({
         text: correct ? (
@@ -177,6 +196,8 @@ const useStageTransition = () => {
 
   const ask = useCallback(
     async (message: string) => {
+      if (!message.trim()) return;
+
       addMessage({ text: message, sender: "You", time: new Date() });
       console.log("ask", message, stage);
       // if topicSelection Stage, then pick topic
@@ -186,7 +207,7 @@ const useStageTransition = () => {
         // setTitle(title);
       } else if (stage === "questionStage") {
         console.log("askQuestion", message, character, topic);
-        const reply = await api.askQuestion(message, character, topic );
+        const reply = await api.askQuestion(message, character, topic);
         // Add the reply to the messages array
         addMessage(botMessage(reply));
       } else if (stage === "guessStage") {
