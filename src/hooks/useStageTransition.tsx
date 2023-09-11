@@ -14,7 +14,6 @@ type Message = {
       }) => React.ReactNode);
   sender: "Bot" | "You";
   time: Date;
-  topics?: boolean;
 };
 
 type Stage =
@@ -84,29 +83,11 @@ const useStageTransition = () => {
     if (stage === "start") {
       setMessages([
         {
-          text: ({ topic }) => {
-            console.log("text function");
-            return (
+          text: 
               <>
-                Please send a message with your topic or pick one:
-                <div>
-                  {topics.map((topicItem, index) => (
-                    <button
-                      key={index}
-                      disabled={!!topic}
-                      onClick={() => setTopic(topicItem)}
-                      className={`btn btn-secondary m-1 ${
-                        topicItem === topic ? "border-black border-4" : ""
-                      }`}
-                    >
-                      {topicItem}
-                    </button>
-                  ))}
-                </div>
+                Please send a message with a movie, show, videogame or anime where you want to try to guess a character.
               </>
-            );
-          },
-          topics: true,
+          ,
           sender: "Bot",
           time: new Date(),
         },
