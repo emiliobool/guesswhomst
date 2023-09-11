@@ -4,9 +4,9 @@ export async function onRequest({ request, env }) {
   const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
   const { topic, title } = await request.json();
-
+  const MODEL = env.OPENAI_MODEL || "gpt-3.5-turbo"
   const gptResponse = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
+    model: MODEL,
     messages: [
       {
         role: "system",
