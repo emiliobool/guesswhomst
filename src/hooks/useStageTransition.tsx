@@ -10,7 +10,6 @@ type Message = {
         character: string;
         messages: Message[];
         topic: string;
-        title: string;
       }) => React.ReactNode);
   sender: "Bot" | "You";
   time: Date;
@@ -41,7 +40,7 @@ const useStageTransition = () => {
   const [stage, setStage] = useState<Stage>("start");
   const [character, setCharacter] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
+  // const [title, setTitle] = useState<string>("");
 
   const addMessage = useCallback(
     (message: Message) =>
@@ -53,7 +52,7 @@ const useStageTransition = () => {
     setMessages([]);
     setCharacter("");
     setTopic("");
-    setTitle("");
+    // setTitle("");
     setStage("start");
   };
 
@@ -145,19 +144,18 @@ const useStageTransition = () => {
         message,
         character,
         topic,
-        title
       );
       // Add the reply to the messages array
       addMessage({
         text: correct ? (
           <>
             <strong>YOU WIN!</strong> the character was{" "}
-            <strong>{character}</strong> from <strong>{title}</strong>!
+            <strong>{character}</strong> from <strong>{topic}</strong>!
           </>
         ) : (
           <>
             <strong>YOU LOST</strong>, the character was{" "}
-            <strong>{character}</strong> from <strong>{title}</strong>
+            <strong>{character}</strong> from <strong>{topic}</strong>
           </>
         ),
         sender: "Bot",
@@ -167,7 +165,7 @@ const useStageTransition = () => {
       setStage("gameEnded");
       gameEndedMessage();
     },
-    [character, topic, title]
+    [character, topi, ]
   );
 
   const ask = useCallback(
@@ -176,12 +174,12 @@ const useStageTransition = () => {
       console.log("ask", message, stage);
       // if topicSelection Stage, then pick topic
       if (stage === "topicSelection") {
-        const title = await api.getTitle(message);
+        // const title = await api.getTitle(message);
         setTopic(message);
-        setTitle(title);
+        // setTitle(title);
       } else if (stage === "questionStage") {
         console.log("askQuestion", message, character, topic);
-        const reply = await api.askQuestion(message, character, topic, title);
+        const reply = await api.askQuestion(message, character, topic );
         // Add the reply to the messages array
         addMessage(botMessage(reply));
       } else if (stage === "guessStage") {
@@ -203,7 +201,7 @@ const useStageTransition = () => {
     guess,
     ask,
     setTopic,
-    title,
+    // title,
   };
 };
 
