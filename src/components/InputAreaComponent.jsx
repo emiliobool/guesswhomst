@@ -4,11 +4,41 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   const [message, setMessage] = React.useState("");
   const inputRef = useRef(null);
 
-  useEffect(() => {
+  const focusInput = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+  };
+
+  useEffect(() => {
+    const handleClick = () => {
+      console.log('click')
+      focusInput();
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
   }, []);
+
+  useEffect(() => {
+    const handleKeyPress = () => {
+      console.log('keypress')
+      focusInput();
+    };
+
+    document.addEventListener("keypress", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
+
+
+
+  useEffect(focusInput, []);
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useImperativeHandle } from "react";
 import "./App.css";
 import InputAreaComponent from "./components/InputAreaComponent";
 import useStageTransition from "./hooks/useStageTransition";
@@ -6,6 +6,7 @@ import useStageTransition from "./hooks/useStageTransition";
 function App() {
   const { stage, character, topic, title, messages, guess, ask } =
     useStageTransition();
+
 
   // Function to handle sending message
   const handleSendMessage = async (message, type) => {
@@ -30,7 +31,6 @@ function App() {
       </header>
       <div className="chat-window bg-white rounded-lg shadow-md w-full flex-grow overflow-y-auto">
         <div className="messages overflow-y-auto h-full w-full p-4">
-
           {messages.map((message, index) => (
             <div
               key={index}
@@ -46,8 +46,14 @@ function App() {
               <div className="chat-header font-bold text-lg">
                 {message.sender}
               </div>
-              <div className={`chat-bubble chat-bubble-${message.sender === "Bot" ? "primary": "secondary"} text-lg`}>
-                {typeof message.text === 'function' ? message.text({ stage, topic, title, character, messages }) : message.text}
+              <div
+                className={`chat-bubble chat-bubble-${
+                  message.sender === "Bot" ? "primary" : "secondary"
+                } text-lg`}
+              >
+                {typeof message.text === "function"
+                  ? message.text({ stage, topic, title, character, messages })
+                  : message.text}
               </div>
 
               <div className="chat-footer">
@@ -58,8 +64,8 @@ function App() {
             </div>
           ))}
 
-          <div className="chat chat-start hidden"></div>
-          <div className="chat chat-end hidden"></div>
+          <div className="chat chat-start hidden chat-bubble-primary"></div>
+          <div className="chat chat-end hidden chat-bubble-secondary"></div>
 
           <div ref={chatEndRef} />
         </div>
@@ -67,7 +73,11 @@ function App() {
       <div className="input-area w-full">
         <InputAreaComponent
           askDisabled={stage === "guessStage" || stage === "gameEnded"}
-          guessDisabled={stage === "start" || stage === "topicSelection" || stage === "gameEnded"}
+          guessDisabled={
+            stage === "start" ||
+            stage === "topicSelection" ||
+            stage === "gameEnded"
+          }
           onSendMessage={handleSendMessage}
           className="mt-4"
         />
