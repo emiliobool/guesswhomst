@@ -23,7 +23,7 @@ function App() {
   }, [messages]);
 
   return (
-    <div className="h-full p-4 flex flex-col">
+    <div className="h-full p-4 flex flex-col mx-auto max-w-2xl">
       <header className="pb-4">
         <h1 className="text-3xl font-bold text-left">
           🤖 Guess Whomst Bot {topic && `(Topic: ${topic})`}
