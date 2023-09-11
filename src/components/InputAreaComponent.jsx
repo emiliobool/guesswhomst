@@ -12,8 +12,9 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
 
   useEffect(() => {
     const handleClick = () => {
-      console.log('click')
-      focusInput();
+      if (window.getSelection().toString() === '') {
+        focusInput();
+      }
     };
 
     document.addEventListener("click", handleClick);
@@ -25,8 +26,9 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
 
   useEffect(() => {
     const handleKeyPress = () => {
-      console.log('keypress')
-      focusInput();
+      if (window.getSelection().toString() === '') {
+        focusInput();
+      }
     };
 
     document.addEventListener("keypress", handleKeyPress);
@@ -35,7 +37,6 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
       document.removeEventListener("keypress", handleKeyPress);
     };
   }, []);
-
 
 
   useEffect(focusInput, []);
