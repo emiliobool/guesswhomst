@@ -172,7 +172,7 @@ const useStageTransition = () => {
       setStage("gameEnded");
       gameEndedMessage();
     },
-    [character, topic]
+    [character, topic, messages]
   );
 
   const ask = useCallback(
