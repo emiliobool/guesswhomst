@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   const [message, setMessage] = React.useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);
@@ -24,6 +31,7 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   return (
     <div className="flex items-center justify-between px-0 pt-4 pb-0">
       <input
+        ref={inputRef}
         type="text"
         value={message}
         disabled={askDisabled && guessDisabled}
@@ -50,3 +58,4 @@ const InputAreaComponent = ({ onSendMessage, askDisabled, guessDisabled }) => {
   );
 };
 export default InputAreaComponent;
+
